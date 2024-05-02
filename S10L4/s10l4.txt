@@ -1,0 +1,24 @@
+//Commento codice assembly
+push ebp push della variabile locale
+mov ebp , esp punta alla variabile locale
+push ecx salva il registro contatore sullo stack 
+push 0 ; dwReserved push 0 sullo stack
+push 0 ; lpdwFlags push 0 sullo stack
+call ds:InternetGetConnectedState chiama la funzione che verifica la connessione internet 
+mov [ebp *var_4], eax muove il risultato della funzione
+cmp [ebp *var_4], 0 fa il confronto con 0
+jz short loc_40102B se è 0 salta all'etichetta selezionata
+push offset_aSuccessInterne; se la connessione è avvenuta con successo
+call sub_40105F chiama un altra funzione
+add esp, 4 pulisce lo stack
+mov eax, 1 codice di ritorno
+jmp short loc_40103A salta all'etichetta per terminare il flusso
+
+
+
+InternetGetConnectedState function (wininet.h)
+Returns TRUE if there is an active modem or a LAN Internet connection, or FALSE if there is no Internet connection,
+or if all possible Internet connections are not currently active.
+
+When InternetGetConnectedState returns FALSE, the application can call GetLastError to retrieve the error code.
+da https://learn.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetconnectedstate#syntax
